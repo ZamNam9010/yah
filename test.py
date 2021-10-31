@@ -35,20 +35,28 @@ def screen(position):
     pygame.draw.rect(window, green, ground)
 
 def main():
+    
     position = pygame.Rect(win_wid / 2, groundhei - charhei, charwid, charhei)
+    min_h = groundhei - charhei
     clock = pygame.time.Clock()
     run = True
-
+    n = 10
+    jump = True
     while run:
         clock.tick(fps)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()        
         screen(position)
-        charmove(keys,position)
-
+        if position.y <= min_h - 30:
+            if keys[pygame.K_w] != 1:
+                
+                charmove(keys,position)
+        else:
+            charmove(keys,position)
+            
 
 
 
