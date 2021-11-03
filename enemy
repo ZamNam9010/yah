@@ -1,0 +1,80 @@
+import pygame
+import random
+import math
+pygame.init()
+
+win_wid = 1000
+win_hei = 500
+window = pygame.display.set_mode((win_wid,win_hei))
+pygame.display.set_caption("game")
+white = (255,255,255)
+black = (0,0,0)
+green = (0,255,0)
+red = (255,0,0)
+blue = (0,100,255)
+fps = 30
+charhei = 60
+charwid = 30
+groundhei = 400
+ground = pygame.Rect(0,groundhei,win_wid,win_hei/2)
+enemyx = random.randint(0,win_wid)
+enemyy = random.randint(0,win_hei/2)
+
+def charmove(keys,position):
+    if keys[pygame.K_a]:
+        position.x -= 4
+    if keys[pygame.K_d]:
+        position.x += 4
+
+def screen(position,bullets,enemypos):
+    char = pygame.draw.rect(window, red, position)
+    for bullet in bullets:
+        pygame.draw.circle(window,red,(bullet.x,bullet.y),4)
+        bullet.x += 20
+    
+    enemy = pygame.draw.rect(window,(0,0,255),enemypos)
+    
+    pygame.display.update()
+    window.fill(blue)
+    pygame.draw.rect(window, green, ground)
+    
+
+def main():
+    position = pygame.Rect(win_wid / 2, groundhei - charhei, charwid, charhei)
+    enemypos = pygame.Rect(enemyx,enemyy,charwid,charhei)
+    clock = pygame.time.Clock()
+    run = True
+    bullets = []
+    
+    while run:
+        
+
+        clock.tick(fps)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    bullet = pygame.Rect(position.x + charwid,position.y + charhei//2,20,20)
+                    bullets.append(bullet)
+        
+        keys = pygame.key.get_pressed()
+        if position.y < groundhei-charhei:
+            position.y += 5
+        if keys[pygame.K_w] and position.y == groundhei-charhei:
+            position.y -= 60
+        if enemypos.y < groundhei-charhei:
+            enemypos.y += 5
+        enemypos.x += random.randint(-4,4)
+
+        
+        
+        charmove(keys,position)
+        screen(position,bullets,enemypos)
+        
+    
+
+    pygame.quit()
+    
+
+main()
