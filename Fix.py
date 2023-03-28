@@ -50,13 +50,19 @@ def main():
 
         keys = pygame.key.get_pressed()        
         screen(position)
-        if position.y <= min_h - 30:
-            if keys[pygame.K_w] != 1:
-                
-                charmove(keys,position)
-        else:
+        
+        if n < 0:
+            jump = False
+        if jump:            
             charmove(keys,position)
-            
+            if keys[pygame.K_w] == 1:
+                n -= 1
+        elif position.y == min_h:
+            n = 10
+            jump = True
+        else:
+            position.y += 1
+
 
 
 
